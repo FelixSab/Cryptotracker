@@ -1,9 +1,6 @@
 ﻿using System.Net.Http.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Cryptotracker.Core.Interfaces.Services;
 using Cryptotracker.Contracts.External;
-using NpgsqlTypes;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace CryptoTracker.Infrastructure.Services;

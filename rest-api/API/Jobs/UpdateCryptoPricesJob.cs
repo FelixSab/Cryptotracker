@@ -1,5 +1,7 @@
-﻿using Cryptotracker.Core.Interfaces.Services;
+﻿using Cryptotracker.Core.Entities;
+using Cryptotracker.Core.Interfaces.Services;
 using Cryptotracker.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Quartz;
 
 namespace Cryptotracker.API.Jobs;

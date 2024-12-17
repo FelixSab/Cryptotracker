@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Cryptotracker.API;
 using Cryptotracker.API.Utils;
-using System;
 using Cryptotracker.Core.Interfaces.Services;
 using CryptoTracker.Infrastructure.Services;
+using Cryptotracker.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +24,11 @@ builder.Services.AddHttpLogging(o => { });
 builder.Services.AddCronJobs(builder.Configuration);
 
 // Configure DbContext
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseNpgsql(
-//        builder.Configuration.GetConnectionString("DefaultConnection"),
-//        b => b.MigrationsAssembly("CryptoTracker.Infrastructure")
-//    ));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Cryptotracker.Infrastructure")
+    ));
 
 
 // Add Swagger for testing
