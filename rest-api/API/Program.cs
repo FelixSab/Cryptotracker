@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Cryptotracker.API;
 using Cryptotracker.API.Utils;
+using System;
+using Cryptotracker.Core.Interfaces.Services;
+using CryptoTracker.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddChatbotClient();
 builder.Services.ConfigureModelValidation();
 builder.Services.AddHealthChecks();
 
+builder.Services.AddHttpClient<ICoinApiService, CoinApiService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["CoinApi:BaseUrl"] ?? "https://rest.coinapi.io/v2/");
+    client.DefaultRequestHeaders.Add("X-CoinAPI-Key", builder.Configuration["CoinApi:ApiKey"]);
+});
+
 builder.Services.AddHttpLogging(o => { });
+
+// Configure DbContext
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseNpgsql(
+//        builder.Configuration.GetConnectionString("DefaultConnection"),
+//        b => b.MigrationsAssembly("CryptoTracker.Infrastructure")
+//    ));
+
 
 // Add Swagger for testing
 builder.Services.AddSwaggerGen();

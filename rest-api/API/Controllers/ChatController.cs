@@ -1,48 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Cryptotracker.API.Attributes;
-using Cryptotracker.Contracts.DTOs;
-using Cryptotracker.Contracts.Interfaces;
-using static Cryptotracker.API.Utils.ErrorResponses;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Cryptotracker.API.Attributes;
+//using Cryptotracker.Contracts.DTOs;
+//using Cryptotracker.Contracts.Interfaces;
+//using static Cryptotracker.API.Utils.ErrorResponses;
 
-namespace Cryptotracker.API.Controllers;
+//namespace Cryptotracker.API.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class ChatController(IChatbotClient chatbotClient) : Controller
-{
-    private readonly IChatbotClient _chatbotClient = chatbotClient ?? throw new ArgumentNullException(nameof(chatbotClient));
+//[ApiController]
+//[Route("[controller]")]
+//public class ChatController(IChatbotClient chatbotClient) : Controller
+//{
+//    private readonly IChatbotClient _chatbotClient = chatbotClient ?? throw new ArgumentNullException(nameof(chatbotClient));
 
-    [HttpPost]
-    [ProducesResponseType(typeof(ChatCreateResponseDto), StatusCodes.Status200OK)]
-    [ProducesProblemDetails(StatusCodes.Status400BadRequest)]
-    [ProducesProblemDetails(StatusCodes.Status404NotFound)]
-    public ActionResult<ChatCreateResponseDto> CreateChat([FromBody] ChatCreateRequestDto request)
-    {
-        if (!_chatbotClient.BotExists(request.BotId))
-        {
-            return NotFound(CreateNotFound($"No bot found with the provided botId: {request.BotId}"));
-        }
+//    [HttpPost]
+//    [ProducesResponseType(typeof(ChatCreateResponseDto), StatusCodes.Status200OK)]
+//    [ProducesProblemDetails(StatusCodes.Status400BadRequest)]
+//    [ProducesProblemDetails(StatusCodes.Status404NotFound)]
+//    public ActionResult<ChatCreateResponseDto> CreateChat([FromBody] ChatCreateRequestDto request)
+//    {
+//        if (!_chatbotClient.BotExists(request.BotId))
+//        {
+//            return NotFound(CreateNotFound($"No bot found with the provided botId: {request.BotId}"));
+//        }
 
-        var response = _chatbotClient.CreateChat(request.BotId! /* validated through data annotations */);
+//        var response = _chatbotClient.CreateChat(request.BotId! /* validated through data annotations */);
 
-        return Ok(response);
-    }
+//        return Ok(response);
+//    }
 
-    [HttpPost("{chatId}/completions")]
-    [ProducesResponseType(typeof(ChatCompletionResponseDto), StatusCodes.Status200OK)]
-    [ProducesProblemDetails(StatusCodes.Status400BadRequest)]
-    [ProducesProblemDetails(StatusCodes.Status404NotFound)]
-    public ActionResult<ChatCompletionResponseDto> ChatCompletion(
-        [FromRoute] string chatId,
-        [FromBody] ChatCompletionRequestDto request)
-    {
-        if (!_chatbotClient.ChatExists(chatId))
-        {
-            return NotFound(CreateNotFound($"No chat found with the provided chatId: {chatId}"));
-        }
+//    [HttpPost("{chatId}/completions")]
+//    [ProducesResponseType(typeof(ChatCompletionResponseDto), StatusCodes.Status200OK)]
+//    [ProducesProblemDetails(StatusCodes.Status400BadRequest)]
+//    [ProducesProblemDetails(StatusCodes.Status404NotFound)]
+//    public ActionResult<ChatCompletionResponseDto> ChatCompletion(
+//        [FromRoute] string chatId,
+//        [FromBody] ChatCompletionRequestDto request)
+//    {
+//        if (!_chatbotClient.ChatExists(chatId))
+//        {
+//            return NotFound(CreateNotFound($"No chat found with the provided chatId: {chatId}"));
+//        }
 
-        var response = _chatbotClient.PostChatCompletion(chatId, request);
+//        var response = _chatbotClient.PostChatCompletion(chatId, request);
 
-        return Ok(response);
-    }
-}
+//        return Ok(response);
+//    }
+//}
