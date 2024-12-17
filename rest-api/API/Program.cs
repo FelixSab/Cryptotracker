@@ -16,7 +16,7 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddHttpClient<ICoinApiService, CoinApiService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["CoinApi:BaseUrl"] ?? "https://rest.coinapi.io/v2/");
+    client.BaseAddress = new Uri(builder.Configuration["CoinApi:BaseUrl"] ?? "https://api.coincap.io/v2/");
     client.DefaultRequestHeaders.Add("X-CoinAPI-Key", builder.Configuration["CoinApi:ApiKey"]);
 });
 
