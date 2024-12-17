@@ -14,7 +14,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["rest-api/API/Cryptotracker.API.csproj", "API/"]
 RUN dotnet restore "./API/Cryptotracker.API.csproj"
-COPY . .
+COPY ./rest-api .
 WORKDIR "/src/API"
 RUN dotnet build "./Cryptotracker.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
