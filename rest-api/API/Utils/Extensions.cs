@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cryptotracker.API.Jobs;
+using Microsoft.AspNetCore.Mvc;
+using Quartz;
 
 namespace Cryptotracker.API.Utils;
 
@@ -32,5 +34,27 @@ public static class Extensions
             };
         });
 
+    }
+
+    public static IServiceCollection AddCronJobs(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services.AddQuartz(q =>
+        {
+            var jobConfig = configuration.GetSection("Jobs:UpdateCryptoPrices");
+
+            // Register the job
+            var jobKey = new JobKey("UpdateCryptoPrices");
+            q.AddJob<UpdateCryptoPricesJob>(opts => opts.WithIdentity(jobKey));
+
+            q.AddTrigger(opts => opts
+                .ForJob(jobKey)
+                .WithIdentity("UpdateCryptoPrices-trigger")
+                .WithCronSchedule(jobConfig.GetValue<string>("CronSchedule") ?? "0 */5 * ? * *")
+            );
+        });
+
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+        return services;
     }
 }

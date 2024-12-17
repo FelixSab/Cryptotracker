@@ -21,6 +21,7 @@ builder.Services.AddHttpClient<ICoinApiService, CoinApiService>(client =>
 });
 
 builder.Services.AddHttpLogging(o => { });
+builder.Services.AddCronJobs(builder.Configuration);
 
 // Configure DbContext
 //builder.Services.AddDbContext<AppDbContext>(options =>
