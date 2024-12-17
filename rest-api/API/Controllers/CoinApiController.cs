@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cryptotracker.Core.Interfaces.Services;
-using Cryptotracker.Contracts.External;
+using Cryptotracker.Core.DTOs.CoinApi;
 
 namespace Cryptotracker.API.Controllers;
 

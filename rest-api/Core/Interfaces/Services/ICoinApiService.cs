@@ -1,4 +1,4 @@
-﻿using Cryptotracker.Contracts.External;
+﻿using Cryptotracker.Core.DTOs.CoinApi;
 
 namespace Cryptotracker.Core.Interfaces.Services;
 

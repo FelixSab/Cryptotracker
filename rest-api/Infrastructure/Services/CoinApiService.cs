@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Cryptotracker.Core.Interfaces.Services;
-using Cryptotracker.Contracts.External;
 using Microsoft.AspNetCore.WebUtilities;
+using Cryptotracker.Core.DTOs.CoinApi;
 
 namespace CryptoTracker.Infrastructure.Services;
 

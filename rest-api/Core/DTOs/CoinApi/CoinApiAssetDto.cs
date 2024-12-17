@@ -1,4 +1,4 @@
-﻿namespace Cryptotracker.Contracts.External;
+﻿namespace Cryptotracker.Core.DTOs.CoinApi;
 
 public class CoinApiAssetDto
 {
