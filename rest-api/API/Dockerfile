@@ -12,10 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Cryptotracker.API/Cryptotracker.API.csproj", "Cryptotracker.API/"]
-RUN dotnet restore "./Cryptotracker.API/Cryptotracker.API.csproj"
+COPY ["rest-api/API/Cryptotracker.API.csproj", "API/"]
+RUN dotnet restore "./API/Cryptotracker.API.csproj"
 COPY . .
-WORKDIR "/src/Cryptotracker.API"
+WORKDIR "/src/API"
 RUN dotnet build "./Cryptotracker.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
