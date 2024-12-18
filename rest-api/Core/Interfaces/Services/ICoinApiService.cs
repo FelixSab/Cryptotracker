@@ -6,5 +6,5 @@ public interface ICoinApiService
 {
     Task<IEnumerable<CoinApiAssetDto>> GetAllAssetsAsync();
     Task<CoinApiAssetDto?> GetAssetByIdAsync(string id);
-    Task<IEnumerable<CoinApiAssetHistoryDto>> GetAssetHistoryAsync(string id, string interval, long start = 0, long end = 0);
+    Task<IEnumerable<CoinApiAssetHistoryDto>> GetAssetHistoryAsync(string id, string interval, decimal start = 0, decimal end = 0);
 }

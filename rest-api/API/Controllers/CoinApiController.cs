@@ -19,8 +19,8 @@ public class CoinApiController(ICoinApiService _coinApiService) : Controller
     public async Task<ActionResult<CoinApiAssetHistoryDto[]>> GetAssetHistory(
         [FromRoute] string assetId,
         [FromQuery] string interval,
-        [FromQuery] long start,
-        [FromQuery] long end
+        [FromQuery] decimal start,
+        [FromQuery] decimal end
     )
     {
         var response = await _coinApiService.GetAssetHistoryAsync(assetId, interval, start, end);

@@ -19,7 +19,7 @@ public class CoinApiService(HttpClient httpClient) : ICoinApiService
         return response?.Data;
     }
 
-    public async Task<IEnumerable<CoinApiAssetHistoryDto>> GetAssetHistoryAsync(string id, string interval, long start = 0, long end = 0)
+    public async Task<IEnumerable<CoinApiAssetHistoryDto>> GetAssetHistoryAsync(string id, string interval, decimal start = 0, decimal end = 0)
     {
         var query = new Dictionary<string, string?> { ["interval"] = interval };
 
