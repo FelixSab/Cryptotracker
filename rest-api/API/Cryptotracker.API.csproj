@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contracts\Cryptotracker.Contracts.csproj" />
     <ProjectReference Include="..\Core\Cryptotracker.Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Cryptotracker.Infrastructure.csproj" />
   </ItemGroup>

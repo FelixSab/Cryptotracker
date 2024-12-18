@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Contracts\Cryptotracker.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>
