@@ -57,4 +57,23 @@ public static class Extensions
 
         return services;
     }
+
+    public static IServiceCollection AddCorsPolicies(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontendOrigin",
+                builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+        });
+
+        return services;
+    }
+
 }

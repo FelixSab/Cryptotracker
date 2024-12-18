@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureModelValidation();
 builder.Services.AddHealthChecks();
+builder.Services.AddCorsPolicies();
 
 builder.Services.AddHttpClient<ICoinApiService, CoinApiService>(client =>
 {
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCors("AllowFrontendOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

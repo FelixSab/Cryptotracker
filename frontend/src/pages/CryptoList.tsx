@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import {
   Table,
   TableBody,
@@ -11,15 +10,17 @@ import {
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { Crypto } from '@/types/Crypto';
+import { CryptoCurrency } from '@/types';
+import { useAxios } from '@/hooks';
 
 export default function CryptoList() {
   const [search, setSearch] = useState('');
+  const axios = useAxios();
   
   const { data: cryptos, isLoading } = useQuery({
     queryKey: ['cryptos'],
     queryFn: async () => {
-      const response = await axios.get<Crypto[]>('http://localhost:8080/api/cryptos');
+      const response = await axios.get<CryptoCurrency[]>('/currencies');
       return response.data;
     },
   });
