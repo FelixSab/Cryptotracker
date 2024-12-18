@@ -22,9 +22,10 @@ public class CurrenciesController(AppDbContext context) : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
+            var searchTerm = $"%{query.SearchTerm}%";
             currencies = currencies.Where(c =>
-                c.Name.Contains(query.SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                c.Symbol.Contains(query.SearchTerm, StringComparison.InvariantCultureIgnoreCase));
+                EF.Functions.Like(c.Name.ToLower(), searchTerm.ToLower()) ||
+                EF.Functions.Like(c.Symbol.ToLower(), searchTerm.ToLower()));
         }
 
         currencies = query.SortBy?.ToLower() switch
