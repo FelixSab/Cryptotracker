@@ -1,4 +1,5 @@
 ﻿using Cryptotracker.API.Attributes;
+using Cryptotracker.Core.DTOs.Requests;
 using Cryptotracker.Core.DTOs.Responses;
 using Cryptotracker.Core.Entities;
 using Cryptotracker.Infrastructure.Data;
@@ -14,13 +15,42 @@ public class CurrenciesController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(CryptoCurrencyListDto), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<CryptoCurrencyListDto>>> Get()
+
+    public async Task<ActionResult<IEnumerable<CryptoCurrencyListDto>>> Get([FromQuery] CurrencyQueryParameters query)
     {
-        var currencies = await context.CryptoCurrencies
+        var currencies = context.CryptoCurrencies.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+        {
+            currencies = currencies.Where(c =>
+                c.Name.Contains(query.SearchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                c.Symbol.Contains(query.SearchTerm, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        currencies = query.SortBy?.ToLower() switch
+        {
+            "name" => query.IsDescending ?
+                currencies.OrderByDescending(c => c.Name) :
+                currencies.OrderBy(c => c.Name),
+            "symbol" => query.IsDescending ?
+                currencies.OrderByDescending(c => c.Symbol) :
+                currencies.OrderBy(c => c.Symbol),
+            "price" => query.IsDescending ?
+                currencies.OrderByDescending(c => c.CurrentPrice) :
+                currencies.OrderBy(c => c.CurrentPrice),
+            "change" => query.IsDescending ?
+                currencies.OrderByDescending(c => c.PriceChange24h) :
+                currencies.OrderBy(c => c.PriceChange24h),
+            _ => currencies.OrderBy(c => c.Name)
+        };
+
+        var pagedCurrencies = await currencies
+            .Skip((query.PageNumber - 1) * query.PageSize)
+            .Take(query.PageSize)
             .Select(c => new CryptoCurrencyListDto(c))
             .ToListAsync();
 
-        return Ok(currencies);
+        return Ok(pagedCurrencies);
     }
 
     [HttpGet("{id}")]
