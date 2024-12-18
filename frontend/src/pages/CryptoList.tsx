@@ -7,6 +7,7 @@ import { CryptoCurrency } from '@/types';
 import { useAxios } from '@/hooks';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type SortField = 'name' | 'symbol' | 'currentPrice' | 'priceChange24h';
 type SortOrder = 'asc' | 'desc';
@@ -48,36 +49,38 @@ export default function CryptoList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Cryptocurrencies</h1>
         <Input
           placeholder="Search cryptocurrencies..."
-          className="max-w-xs"
+          className="w-full sm:max-w-xs"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="rounded-md border">
+
+      {/* Desktop View */}
+      <div className="hidden sm:block rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>
-                <Button variant="ghost" onClick={() => handleSort('name')} className="px-0 border-none bg-transparent">
+                <Button variant="ghost" onClick={() => handleSort('name')} className="px-2 border-none bg-transparent hover:bg-accent">
                   Name <ArrowUpDown className="ml-1 h-4 w-4" />
                 </Button>
               </TableHead>
               <TableHead>
-                <Button variant="ghost" onClick={() => handleSort('symbol')} className="px-0 border-none bg-transparent">
+                <Button variant="ghost" onClick={() => handleSort('symbol')} className="px-2 border-none bg-transparent hover:bg-accent">
                   Symbol <ArrowUpDown className="ml-1 h-4 w-4" />
                 </Button>
               </TableHead>
               <TableHead className="text-right">
-                <Button variant="ghost" onClick={() => handleSort('currentPrice')} className="px-0 border-none bg-transparent ml-auto">
+                <Button variant="ghost" onClick={() => handleSort('currentPrice')} className="px-2 border-none bg-transparent hover:bg-accent ml-auto">
                   Price <ArrowUpDown className="ml-1 h-4 w-4" />
                 </Button>
               </TableHead>
               <TableHead className="text-right">
-                <Button variant="ghost" onClick={() => handleSort('priceChange24h')} className="px-0 border-none bg-transparent ml-auto">
+                <Button variant="ghost" onClick={() => handleSort('priceChange24h')} className="px-2 border-none bg-transparent hover:bg-accent ml-auto">
                   24h Change <ArrowUpDown className="ml-1 h-4 w-4" />
                 </Button>
               </TableHead>
@@ -102,6 +105,30 @@ export default function CryptoList() {
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile View */}
+      <div className="grid grid-cols-1 gap-4 sm:hidden">
+        {sortedAndFilteredCryptos?.map((crypto) => (
+          <Card key={crypto.id}>
+            <CardContent className="p-4">
+              <Link to={`/crypto/${crypto.id}`} className="hover:underline">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="font-medium">{crypto.name}</h3>
+                    <p className="text-sm text-gray-500">{crypto.symbol.toUpperCase()}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">${crypto.currentPrice.toFixed(2)}</p>
+                    <p className={`text-sm ${crypto.priceChange24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {crypto.priceChange24h.toFixed(2)}%
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
