@@ -1,11 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '../hooks/useTheme';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 
 export default function Layout() {
-  const { theme, toggleTheme } = useTheme();
+  // const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="min-h-screen w-full bg-background flex flex-col">
@@ -22,18 +21,14 @@ export default function Layout() {
 
             {/* Right side controls */}
             <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="h-9 w-9"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => window.history.back()}
+              className="h-9 w-9"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
             </div>
           </div>
         </nav>
