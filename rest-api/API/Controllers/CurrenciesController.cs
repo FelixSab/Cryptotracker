@@ -31,11 +31,11 @@ public class CurrenciesController(AppDbContext context) : ControllerBase
         currencies = query.SortBy?.ToLower() switch
         {
             "name" => query.IsDescending ?
-                currencies.OrderByDescending(c => c.Name) :
-                currencies.OrderBy(c => c.Name),
+                currencies.OrderByDescending(c => c.Name.ToLower()) :
+                currencies.OrderBy(c => c.Name.ToLower()),
             "symbol" => query.IsDescending ?
-                currencies.OrderByDescending(c => c.Symbol) :
-                currencies.OrderBy(c => c.Symbol),
+                currencies.OrderByDescending(c => c.Symbol.ToLower()) :
+                currencies.OrderBy(c => c.Symbol.ToLower()),
             "price" => query.IsDescending ?
                 currencies.OrderByDescending(c => c.CurrentPrice) :
                 currencies.OrderBy(c => c.CurrentPrice),

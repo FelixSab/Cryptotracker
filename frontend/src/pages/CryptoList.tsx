@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,13 +14,27 @@ type SortField = 'name' | 'symbol' | 'price' | 'change';
 type SortOrder = 'asc' | 'desc';
 
 export default function CryptoList() {
-  const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Initialize state from URL params
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [sortField, setSortField] = useState<SortField>(searchParams.get('sortBy') as SortField || 'name');
+  const [sortOrder, setSortOrder] = useState<SortOrder>(searchParams.get('order') as SortOrder || 'asc');
+  const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
 
-  const [sortField, setSortField] = useState<SortField>('name');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  // Update URL when states change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set('search', debouncedSearch);
+    if (sortField) params.set('sortBy', sortField);
+    if (sortOrder) params.set('order', sortOrder);
+    if (currentPage > 1) params.set('page', currentPage.toString());
+    
+    setSearchParams(params);
+  }, [debouncedSearch, sortField, sortOrder, currentPage, setSearchParams]);
+
+  const pageSize = 20;
   const axios = useAxios();
   
   useEffect(() => {
